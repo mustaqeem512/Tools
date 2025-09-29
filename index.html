@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protein Calculator - Calculate Your Daily Protein Needs | Fitness Tool</title>
+    <meta name="description" content="Calculate your daily protein requirements based on weight, activity level, and fitness goals. Free protein calculator for muscle building, weight loss, and maintenance.">
+    <meta name="keywords" content="protein calculator, daily protein intake, muscle building, weight loss, fitness nutrition, protein requirements">
+    <meta name="author" content="Protein Calculator">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Protein Calculator - Calculate Your Daily Protein Needs">
+    <meta property="og:description" content="Determine your optimal protein intake based on your weight, activity level, and fitness goals.">
+    <meta property="og:type" content="website">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --primary-dark: #3a5982;
+            --secondary: #ff6b6b;
+            --accent: #51cf66;
+            --dark: #2d3748;
+            --light: #f7fafc;
+            --gray: #718096;
+            --border-radius: 8px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: var(--light);
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+        
+        /* Calculator Section */
+        .calculator {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2rem;
+            color: var(--primary);
+        }
+        
+        .calculator-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .calculator-form {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+        }
+        
+        .calculator-result {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .radio-option input {
+            margin: 0;
+        }
+        
+        .calculate-btn {
+            display: block;
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .calculate-btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .result-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .result-description {
+            text-align: center;
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+        
+        .protein-sources {
+            margin-top: 30px;
+        }
+        
+        .protein-sources h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            color: var(--dark);
+        }
+        
+        .source-list {
+            list-style: none;
+        }
+        
+        .source-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .source-list li:last-child {
+            border-bottom: none;
+        }
+        
+        /* Ad Spaces */
+        .ad-container {
+            background-color: #f1f5f9;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .ad-label {
+            display: block;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+        
+        .ad-unit {
+            width: 100%;
+            min-height: 90px;
+            background-color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            margin: 0 auto;
+        }
+        
+        .ad-unit.leaderboard {
+            max-width: 728px;
+            min-height: 90px;
+        }
+        
+        .ad-unit.rectangle {
+            max-width: 300px;
+            min-height: 250px;
+        }
+        
+        /* Info Section */
+        .info {
+            padding: 80px 0;
+            background-color: #f8f9fa;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .info-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+        }
+        
+        .info-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            color: var(--primary);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #4a5568;
+            color: #a0aec0;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: white;
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: var(--shadow);
+                text-align: center;
+            }
+            
+            nav ul.show {
+                display: flex;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .calculator-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero {
+                padding: 60px 0;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .calculator-form, .calculator-result {
+                padding: 20px;
+            }
+            
+            .result-value {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <span class="logo-icon">💪</span>
+                <span>ProteinCalc</span>
+            </div>
+            <button class="mobile-menu-btn">☰</button>
+            <nav>
+                <ul id="menu">
+                    <li><a href="#calculator">Calculator</a></li>
+                    <li><a href="#info">Information</a></li>
+                    <li><a href="#resources">Resources</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content">
+            <h1>Protein Intake Calculator</h1>
+            <p>Calculate your optimal daily protein requirements based on your weight, activity level, and fitness goals. Get personalized recommendations for muscle building, weight loss, or maintenance.</p>
+        </div>
+    </section>
+
+    <!-- Ad Space -->
+    <div class="container">
+        <span class="ad-label">Advertisement</span>
+        <div class="ad-container">
+            <div class="ad-unit leaderboard" id="ad-unit-1">
+                <!-- AdSense Code Will Go Here -->
+                AdSense Leaderboard (728x90)
+            </div>
+        </div>
+    </div>
+
+    <!-- Calculator Section -->
+    <section class="calculator" id="calculator">
+        <div class="container">
+            <h2 class="section-title">Calculate Your Protein Needs</h2>
+            <div class="calculator-container">
+                <div class="calculator-form">
+                    <form id="protein-form">
+                        <div class="form-group">
+                            <label for="weight">Weight (kg)</label>
+                            <input type="number" id="weight" class="form-control" placeholder="Enter your weight" min="30" max="200" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="unit">Weight Unit</label>
+                            <select id="unit" class="form-control">
+                                <option value="kg">Kilograms (kg)</option>
+                                <option value="lbs">Pounds (lbs)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Activity Level</label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" id="sedentary" name="activity" value="1.2" checked>
+                                    <label for="sedentary">Sedentary</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="light" name="activity" value="1.375">
+                                    <label for="light">Lightly Active</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="moderate" name="activity" value="1.55">
+                                    <label for="moderate">Moderately Active</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="very" name="activity" value="1.725">
+                                    <label for="very">Very Active</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="extreme" name="activity" value="1.9">
+                                    <label for="extreme">Extremely Active</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Fitness Goal</label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" id="maintenance" name="goal" value="1.0" checked>
+                                    <label for="maintenance">Maintenance</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="muscle" name="goal" value="1.6">
+                                    <label for="muscle">Muscle Building</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="fatloss" name="goal" value="1.2">
+                                    <label for="fatloss">Fat Loss</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="calculate-btn">Calculate Protein Needs</button>
+                    </form>
+                </div>
+                
+                <div class="calculator-result">
+                    <h3>Your Daily Protein Intake</h3>
+                    <div class="result-value" id="result-value">--</div>
+                    <p class="result-description" id="result-description">Enter your information to calculate your protein needs</p>
+                    
+                    <div class="protein-sources">
+                        <h3>High-Protein Foods</h3>
+                        <ul class="source-list">
+                            <li><span>Chicken Breast (100g)</span><span>31g</span></li>
+                            <li><span>Salmon (100g)</span><span>25g</span></li>
+                            <li><span>Eggs (2 large)</span><span>12g</span></li>
+                            <li><span>Greek Yogurt (100g)</span><span>10g</span></li>
+                            <li><span>Lentils (cooked, 1 cup)</span><span>18g</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ad Space -->
+    <div class="container">
+        <span class="ad-label">Advertisement</span>
+        <div class="ad-container">
+            <div class="ad-unit rectangle" id="ad-unit-2">
+                <!-- AdSense Code Will Go Here -->
+                AdSense Rectangle (300x250)
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Section -->
+    <section class="info" id="info">
+        <div class="container">
+            <h2 class="section-title">Protein Intake Information</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Why Protein Matters</h3>
+                    <p>Protein is essential for building and repairing tissues, producing enzymes and hormones, and supporting immune function. Adequate protein intake is crucial for muscle growth, recovery, and overall health.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Protein for Muscle Building</h3>
+                    <p>When building muscle, your body needs additional protein to support muscle protein synthesis. Research suggests 1.6-2.2g of protein per kg of body weight is optimal for muscle growth when combined with resistance training.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Protein for Weight Loss</h3>
+                    <p>Higher protein intake can help with weight loss by increasing satiety, reducing cravings, and preserving lean muscle mass during calorie restriction. Aim for 1.2-1.6g per kg of body weight when losing weight.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>ProteinCalc</h3>
+                    <p>Your trusted source for calculating optimal protein intake based on scientific recommendations.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#calculator">Protein Calculator</a></li>
+                        <li><a href="#info">Protein Information</a></li>
+                        <li><a href="#">Diet Plans</a></li>
+                        <li><a href="#">Recipes</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Research Studies</a></li>
+                        <li><a href="#">Nutrition Guides</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Disclaimer</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ProteinCalc. All rights reserved. This calculator provides estimates only and should not replace professional medical advice.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Protein Calculator Functionality
+        document.getElementById('protein-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            let weight = parseFloat(document.getElementById('weight').value);
+            const unit = document.getElementById('unit').value;
+            const activity = parseFloat(document.querySelector('input[name="activity"]:checked').value);
+            const goal = parseFloat(document.querySelector('input[name="goal"]:checked').value);
+            
+            // Convert weight to kg if in lbs
+            if (unit === 'lbs') {
+                weight = weight * 0.453592;
+            }
+            
+            // Calculate protein needs (base formula: weight in kg * activity factor * goal factor)
+            const proteinNeeds = Math.round(weight * activity * goal);
+            
+            // Display results
+            document.getElementById('result-value').textContent = `${proteinNeeds}g`;
+            
+            // Update description based on goal
+            let description = '';
+            const goalType = document.querySelector('input[name="goal"]:checked').id;
+            
+            if (goalType === 'maintenance') {
+                description = `For maintaining your current weight and muscle mass, aim for ${proteinNeeds}g of protein daily.`;
+            } else if (goalType === 'muscle') {
+                description = `For optimal muscle building, consume ${proteinNeeds}g of protein daily alongside resistance training.`;
+            } else if (goalType === 'fatloss') {
+                description = `For effective fat loss while preserving muscle, target ${proteinNeeds}g of protein daily.`;
+            }
+            
+            document.getElementById('result-description').textContent = description;
+        });
+        
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.getElementById('menu').classList.toggle('show');
+        });
+        
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('menu').classList.remove('show');
+            });
+        });
+        
+        // AdSense integration placeholder
+        function initAdSense() {
+            // Replace with your AdSense code
+            console.log('AdSense would be initialized here with your ad unit IDs');
+            
+            // Example:
+            // (adsbygoogle = window.adsbygoogle || []).push({});
+        }
+        
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initAdSense);
+    </script>
+</body>
+</html>
